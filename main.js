@@ -1,15 +1,42 @@
 const Discord = require('discord.js');
-const bot = new Discord.Client();
+// eslint-disable-next-line no-unused-vars
+const { prefix, token } = require('./config.json');
+const client = new Discord.Client();
 
-bot.on('ready', () => {
-	console.log(`Logged in as ${bot.user.tag}!`);
+client.on('ready', () => {
+	console.log(`Logged in as ${client.user.tag}!`);
 });
 
-bot.on('message', msg => {
-	if (msg.content === 'ping') {
-		msg.reply('pong');
+client.on('message', msg => {
+	if (!msg.content.startsWith(prefix) || msg.author.bot) return;
+
+	const args = msg.content.slice(prefix.length).split(/ +/);
+	const command = args.shift().toLowerCase();
+	if (command === 'args-info') {
+		if (!args.length) {
+			return msg.channel.send(`You didn't provide any arguments, ${msg.author}!`);
+		}
+		else if (args[0] === 'foo') {
+			return msg.channel.send('bar');
+		}
+
+		msg.channel.send(`First argument: ${args[0]}`);
 	}
+
+	// switch (msg.content) {
+	// case `${prefix}ping`:
+	// 	msg.reply(`${prefix}pong`);
+	// 	break;
+	// case `${prefix}lol`:
+	// 	msg.reply(`${prefix}lmao`);
+	// 	break;
+	// case `${prefix}server`:
+	// 	// eslint-disable-next-line quotes
+	// 	msg.reply(`\`\`\`\nThis server's name is: ${msg.guild.name}\nTotal members: ${msg.guild.memberCount}\`\`\``);
+	// 	break;
+	// default:
+	// 	break;
+	// }
 });
 
-
-bot.login('NzIxMTkyMDE3ODExNjAzNDk3.XuRAuQ.XSGVmVNONgnpW7rCxIWQTrSPF-M');
+client.login(token);
