@@ -2,15 +2,11 @@
   "name": "dawnbringer-bot",
   "version": "1.0.0",
   "description": " The bot improves the user experience for discord guild death matches. May have additional 7Ds related server management functionality in the future.",
-  "main": "mainCopy.js",
+  "main": "main.js",
   "dependencies": {
     "discord.js": "^12.2.0"
   },
-  "eslintConfig": {
-    "env": {
-      "commonjs": true
-    }
-  },
+ 
   "devDependencies": {
     "eslint": "^7.3.1"
   },
