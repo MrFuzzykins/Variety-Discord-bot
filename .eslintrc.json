@@ -3,11 +3,15 @@
 	"env": {
 		"node": true,
 		"commonjs": true,
-		"es6": true
+		"es6": false
 		
 	},
 	"parserOptions": {
-		"ecmaVersion": 2019
+		"ecmaVersion": 2019,
+		"sourceType": "module",
+		"ecmaFeatures": {
+			
+		}
 	},
 	"rules": {
 		"brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
