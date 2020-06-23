@@ -7,36 +7,67 @@ client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on('message', msg => {
-	if (!msg.content.startsWith(prefix) || msg.author.bot) return;
+client.on('message', message => {
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-	const args = msg.content.slice(prefix.length).split(/ +/);
+	const args = message.content.slice(prefix.length).split(/ +/);
 	const command = args.shift().toLowerCase();
-	if (command === 'args-info') {
+
+	if (command === 'ping') {
+		message.channel.send('Pong.');
+	}
+	else if (command === 'server') {
+		message.channel.send(`Server name: ${message.guild.name}\nTotal members: ${message.guild.memberCount}`);
+	}
+	else if (command === 'user-info') {
+		message.channel.send(`Your username: ${message.author.username}\nYour ID: ${message.author.id}`);
+	}
+	else if (command === 'info') {
 		if (!args.length) {
-			return msg.channel.send(`You didn't provide any arguments, ${msg.author}!`);
+			return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
 		}
 		else if (args[0] === 'foo') {
-			return msg.channel.send('bar');
+			return message.channel.send('bar');
 		}
 
-		msg.channel.send(`First argument: ${args[0]}`);
+		message.channel.send(`First argument: ${args[0]}`);
 	}
+	else if (command === 'kick') {
+		// grab the "first" mentioned user from the message
+		// this will return a `User` object, just like `message.author`
+		if (!message.mentions.users.size) {
+			return message.reply('you need to tag a user in order to kick them!');
+		}
+		const taggedUser = message.mentions.users.first();
 
-	// switch (msg.content) {
-	// case `${prefix}ping`:
-	// 	msg.reply(`${prefix}pong`);
-	// 	break;
-	// case `${prefix}lol`:
-	// 	msg.reply(`${prefix}lmao`);
-	// 	break;
-	// case `${prefix}server`:
-	// 	// eslint-disable-next-line quotes
-	// 	msg.reply(`\`\`\`\nThis server's name is: ${msg.guild.name}\nTotal members: ${msg.guild.memberCount}\`\`\``);
-	// 	break;
-	// default:
-	// 	break;
-	// }
+		message.channel.send(`You wanted to kick: ${taggedUser.username}`);
+	}
+	else if(command === 'avatar') {
+		if(!message.mentions.users.size) {
+			return message.channel.send(`Your avatar: <${message.author.displayAvatarURL({ format: 'png', dynamic: true })}`);
+		}
+
+		const avatarList = message.mentions.users.map(user => {
+			return `${user.username}'s avatar: <${user.displayAvatarURL({ format: 'png', dynamic: true })}>`;
+		});
+		message.channel.send(avatarList);
+	}
+	else if(command === 'prune') {
+		const amount = parseInt(args[0] + 2);
+
+		if (isNaN(amount)) {
+			return message.reply('that doesn\'t seem to be a valid number.');
+		}
+		else if (amount <= 1 || amount > 100) {
+			return message.reply('you need to input number between 1 and 99');
+		}
+
+		message.channel.bulkDelete(amount, true).catch(err => {
+			console.error(err);
+			message.channel.send('there was an error trying to prune messages in this channel!');
+		});
+
+	}
 });
 
 client.login(token);
