@@ -2,16 +2,11 @@
 	"extends": "eslint:recommended",
 	"env": {
 		"node": true,
-		"commonjs": true,
-		"es6": false
-		
+		"commonjs": true		
 	},
 	"parserOptions": {
 		"ecmaVersion": 2019,
-		"sourceType": "module",
-		"ecmaFeatures": {
-			
-		}
+		"sourceType": "module"
 	},
 	"rules": {
 		"brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
