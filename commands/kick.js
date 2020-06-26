@@ -1,6 +1,7 @@
 module.exports = {
 	name: 'kick',
 	description: 'mock kick a user',
+	guildOnly: true,
 	// eslint-disable-next-line no-unused-vars
 	execute(message, args) {
 
