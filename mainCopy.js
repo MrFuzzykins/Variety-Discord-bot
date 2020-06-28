@@ -1,8 +1,20 @@
+const fs = require('fs');
 const Discord = require('discord.js');
 // eslint-disable-next-line no-unused-vars
 const { prefix, token } = require('./config.json');
-const client = new Discord.Client();
 
+const client = new Discord.Client();
+client.commands = new Discord.Collection();
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+
+	// set a new item in the Collection
+	// with the key as the command name and the value as the exported module
+	client.commands.set(command.name, command);
+}
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 });
@@ -14,9 +26,10 @@ client.on('message', message => {
 	const command = args.shift().toLowerCase();
 
 	if (command === 'ping') {
-		message.channel.send('Pong.');
+		client.commands.get('ping').execute(message, args);
 	}
-	else if (command === 'server') {
+
+	if (command === 'server') {
 		message.channel.send(`Server name: ${message.guild.name}\nTotal members: ${message.guild.memberCount}`);
 	}
 	else if (command === 'user-info') {
