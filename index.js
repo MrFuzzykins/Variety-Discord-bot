@@ -1,8 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { databaseID } = require('./db.js');
 const { prefix, token } = require('./config.json');
-
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
@@ -17,7 +15,6 @@ const cooldowns = new Discord.Collection();
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
-	databaseID.sync();
 });
 
 process.on('unhandledRejection', error => {
@@ -34,7 +31,7 @@ client.on('message', message => {
 		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) return;
-	// exits when command is executed outside of server
+	// exits when command is executed outside of server or not a text
 	if (command.guildOnly && message.channel.type !== 'text') {
 		return message.reply('I can\'t execute that command inside DMs!');
 	}
@@ -52,10 +49,12 @@ client.on('message', message => {
 	if (!cooldowns.has(command.name)) {
 		cooldowns.set(command.name, new Discord.Collection());
 	}
+
 	// proper cooldown objects
 	const now = Date.now();
 	const timestamps = cooldowns.get(command.name);
 	const cooldownAmount = (command.cooldown || 3) * 1000;
+
 	// logic for cooldown
 	if (timestamps.has(message.author.id)) {
 		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
@@ -65,9 +64,11 @@ client.on('message', message => {
 			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
 		}
 	}
+
 	// save and set cooldowns to mentioned author
 	timestamps.set(message.author.id, now);
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+
 	// handle errors
 	try {
 		command.execute(message, args);
