@@ -24,40 +24,26 @@ module.exports = {
 			testR4: '746310135521083454',
 		};
 
-		// const authorID = message.author.id;
-		// const n = 1;
 
-		// console.log(message.channel.guild.channels);
+		const authorID = message.author.id;
+		const n = 1;
+
+		console.log(message.channel.guild.channels);
 
 		console.log(message.guild.roles);
 
 		const filter = (username) => {
 			return username.content.includes(`${prefix}${authorID}`);
 		};
-		//wait 30 secs
+
 		message.channel.awaitMessages(filter, { max: 1, time: 5 * 1000, errors: ['time'] })
-			.then(() => {
-				for (n = 0, n < testRolesDict.length; n++;) {
-				if message.;
-					}
-				}
+			.then(collected =>
+				message.channel.send(`After a amount of time, only ${collected.size} out of 1 recieved.`),
 			)
-			.then(() => )
 			.catch(collected => {
 				console.log(`After a amount of time, only ${collected.size} out of 1 recieved.`);
 				message.channel.send(`After a amount of time, only ${collected.size} out of 1 recieved.`);
 			});
-
-		// // message.channel.send(rolesinfo);
-		// // console.log(rolesinfo);
-		// console.log(message);
-		// const firstdeclaredID = message.author.id;
-		// message.channel.send(firstdeclaredID);
-		// }));
-		// const guildMembers = message.guild.members.cache.map(id);
-		// console.log(guildMembers);
-		// if (member.roles.cache.has('728561286904021033')) {
-		// 	message.channel.send('you\'ve got the role test');
 
 	},
 };
