@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "bluebird": "^3.7.2",
+    "discord.io": "^2.5.3",
     "discord.js": "^12.2.0",
     "eslint": "^7.6.0",
     "mysql": "^2.18.1",
