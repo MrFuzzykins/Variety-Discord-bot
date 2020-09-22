@@ -1,15 +1,15 @@
-const { keyv } = require('../index');
+/* eslint-disable no-undef */
 
 module.exports = {
 	name: 'test',
 	description: 'test random pieces of code',
 	execute(message) {
-		const results = (async () => {
-			await keyv.set('foo', 'bar');
 
-			await keyv.get('foo');
-		})();
+		// Object.values(message.servers[event.d.guild_id].members)
+		// 	.filter(m => m.roles.includes('728561286904021033'))
+		// 	.map(m => m.username + '#' + m.discriminator);
 
-		message.channel.send(results);
+		console.log(Object.values(message.servers));
+
 	},
 };
