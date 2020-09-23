@@ -26,11 +26,6 @@ module.exports = {
 
 
 		const authorID = message.author.id;
-		const n = 1;
-
-		console.log(message.channel.guild.channels);
-
-		console.log(message.guild.roles);
 
 		const filter = (username) => {
 			return username.content.includes(`${prefix}${authorID}`);
@@ -44,6 +39,10 @@ module.exports = {
 				console.log(`After a amount of time, only ${collected.size} out of 1 recieved.`);
 				message.channel.send(`After a amount of time, only ${collected.size} out of 1 recieved.`);
 			});
+
+		console.log(message.channel.guild.channels);
+
+		console.log(message.guild.roles);
 
 	},
 };
